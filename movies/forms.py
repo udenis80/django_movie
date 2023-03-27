@@ -27,3 +27,4 @@ class Actors(models.Model):
         verbose_name = 'Актеры и режиссеры'
         verbose_name_plural = 'Актеры и режиссеры'
 
+
