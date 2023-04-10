@@ -32,7 +32,6 @@ class MovieShotsInLine(admin.TabularInline):
     def get_image(self, obj):
         return mark_safe(f'<img src={obj.image.url} width="50" height="60"')
 
-
     get_image.short_description = 'Изображение'
 
 
@@ -49,7 +48,7 @@ class MovieAdmin(admin.ModelAdmin):
     actions = ["publish", "unpublish"]
     form = MovieAdminForm
     readonly_fields = ("get_image",)
-    # fields = (("actors", "directors", "genres"), )
+    #fields = (("actors", "directors", "genres"), )
     fieldsets = (
         (None, {
             "fields": (("title", "tagline"),)
@@ -67,7 +66,7 @@ class MovieAdmin(admin.ModelAdmin):
         (None, {
             "fields": (("budget", "fees_in_usa", "fees_in_world"),)
         }),
-        ('options', {
+        ('Options', {
             "fields": (("url", "draft"),)
         }),
     )
