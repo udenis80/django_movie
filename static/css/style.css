@@ -675,6 +675,7 @@ span.product-new-top {
 .rating > label {
   position: relative;
   display: block;
+  display: block;
   float: right;
   background: url('../images/star-off-big.png');
   background-size: 30px 30px;

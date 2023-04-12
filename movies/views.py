@@ -28,7 +28,7 @@ class MoviesView(GenreYears, ListView):
 class MovieDetailView(GenreYears, DetailView):
     """Полное описание фильма"""
     model = Movie
-    queryset = Movie.objects.filter(draft=False)
+    # queryset = Movie.objects.filter(draft=False)
     slug_field = "url"
 
     def get_context_data(self, **kwargs):
