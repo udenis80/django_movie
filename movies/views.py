@@ -6,7 +6,7 @@ from django.views.generic.base import View
 from .models import Movie, Category, Actor, Genre, Rating, Review
 from .forms import ReviewForm, RatingForm
 
-class GenreYears():
+class GenreYear():
     """Жанры и года выхода фильмов"""
     def get_genres(self):
         return Genre.objects.all()
@@ -14,18 +14,13 @@ class GenreYears():
     def get_years(self):
         return Movie.objects.filter(draft=False).values('year')
 
-class MoviesView(GenreYears, ListView):
+class MoviesView(GenreYear, ListView):
     """Список фильмов"""
     model = Movie
     queryset = Movie.objects.filter(draft=False)
+    paginate_by = 2
 
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super().get_context_data(*args, **kwargs)
-    #     context['categories'] = Category.objects.all()
-    #     return context
-
-
-class MovieDetailView(GenreYears, DetailView):
+class MovieDetailView(GenreYear, DetailView):
     """Полное описание фильма"""
     model = Movie
     # queryset = Movie.objects.filter(draft=False)
@@ -51,22 +46,29 @@ class AddReview(View):
             form.save()
         return redirect(movie.get_absolute_url())
 
-class ActorView(GenreYears, DetailView):
+class ActorView(GenreYear, DetailView):
     """Вывод информации о актере"""
     model = Actor
     template_name = 'movies/actor.html'
     slug_field = 'name'
 
-class FilterMoviesView(GenreYears, ListView):
+
+class FilterMoviesView(GenreYear, ListView):
     """Фильтр фильмов"""
+    paginate_by = 2
 
     def get_queryset(self):
         queryset = Movie.objects.filter(
             Q(year__in=self.request.GET.getlist("year")) |
             Q(genres__in=self.request.GET.getlist("genre"))
-            )
+        ).distinct()
         return queryset
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["year"] = ''.join([f"year={x}&" for x in self.request.GET.getlist("year")])
+        context["genre"] = ''.join([f"genre={x}&" for x in self.request.GET.getlist("genre")])
+        return context
 class AddStarRating(View):
     """Добавление рейтинга фильму"""
 
