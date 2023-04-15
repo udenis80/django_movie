@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'ckeditor_uploader',
     'movies',
     'contact',
+    'allauth',
+    'allauth.account',
 ]
 
 MIDDLEWARE = [
@@ -90,6 +92,10 @@ DATABASES = {
     }
 }
 
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -121,6 +127,9 @@ USE_I18N = True
 
 USE_TZ = True
 
+LOGIN_REDIRECT_URL = '/'
+
+# LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'), )
 
 gettext = lambda s: s
 LANGUAGES = (
